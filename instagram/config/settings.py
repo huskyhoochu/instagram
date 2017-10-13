@@ -27,6 +27,8 @@ MEDIA_URL = '/media/'
 # instagram_project/instagram/static/
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
 # CONFIG_SECRET_DIR 내의 'settings_common.json' 파일을 읽고
 # 그 결과를 config_secret_common_str 변수에 할당
 
@@ -84,7 +86,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
