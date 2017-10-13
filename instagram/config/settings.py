@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third-party app
     'django_extensions',
+    # User app
+    'post',
 ]
 
 MIDDLEWARE = [
