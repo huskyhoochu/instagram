@@ -5,8 +5,8 @@ from post.models import Post, PostComment
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['id', 'created_at']
-    list_display_links = ['id']
+    list_display = ['id', 'content', 'created_at']
+    list_display_links = ['content']
 
 
 @admin.register(PostComment)

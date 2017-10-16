@@ -1,22 +1,28 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Husky's Instagram</title>
-</head>
-<body>
-<div class="container" style="margin: 0 auto"></div>
-{% for post in posts %}
-    <div class="img">
-    <img src="/media/{{ post.photo }}" alt="">
-    </div>
-    <div class="created">
-    {{ post.created_at }}
-    </div>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% for post in posts %}
+        <div class="img">
+            <img src="{{ post.photo.url }}" alt="">
+        </div>
+        <div class="content">
+        <p>{{ post.content }}</p>
+        </div>
+        <div class="created">
+            {{ post.created_at }}
+        </div>
+        <div class="comment">
+            {% for comment in post.postcomment_set.all %}
+                <span>댓글: {{ comment.content }}</span>
+                 <span>{{ comment.created_at }}</span>
+            {% endfor %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <textarea name="comment" id="" cols="30" rows="2"></textarea>
+                <button type="submit">댓글 달기</button>
+            </form>
+        </div>
+    {% endfor %}
 </div>
-</body>
-</html>
+{% endblock %}
