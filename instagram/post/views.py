@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from post.models import Post, PostComment
-from .forms import PostForm
+from .forms import PostForm, PostCommentForm
 
 
 def post_list(request):
@@ -15,8 +15,10 @@ def post_list(request):
     #
     # elif request.method == 'GET':
     posts = Post.objects.order_by('-created_at')
+    comment_form = PostCommentForm()
     context = {
-        'posts': posts
+        'posts': posts,
+        'comment_form': comment_form,
     }
     return render(request, 'post/post_list.html', context)
 
@@ -42,8 +44,29 @@ def post_add(request):
 
 
 def post_detail(request, pk):
-    post = Post.objects.get(pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     context = {
         'post': post
     }
     return render(request, 'post/post_detail.html', context)
+
+
+def comment_add(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostCommentForm(request.POST)
+        if form.is_valid():
+            PostComment.objects.create(
+                post=post,
+                content=form.cleaned_data['text']
+            )
+            return redirect('post_list')
+
+    else:
+        form = PostCommentForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'post/post_list.html', context)

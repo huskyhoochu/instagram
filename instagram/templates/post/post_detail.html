@@ -2,4 +2,7 @@
 
 {% block content %}
 <img src="{{ post.photo.url }}" alt="">
+    {% for comment in post.comments.all %}
+    <li>{{ comment.content }}</li>
+    {% endfor %}
 {% endblock %}
