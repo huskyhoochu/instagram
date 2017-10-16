@@ -3,8 +3,7 @@
 {% block content %}
     <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-        <input name="photo" type="file">
-        <textarea name="content" id="" cols="30" rows="10" placeholder="내용을 입력하세요"></textarea>
+        {{ form }}
         <button type="submit">사진 올리기</button>
     </form>
 {% endblock %}

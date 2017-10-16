@@ -27,14 +27,23 @@ def post_add(request):
         if form.is_valid():
             # 이 포스트에 정확한 데이터가 들어있다면 (유효성 검증)
             post = Post.objects.create(
-                photo=form.cleaned_data['photo'],
-                content=request.POST.get('content')
+                photo=form.cleaned_data['photo']
             )
             post.save()
             return redirect('post_list')
 
     else:
+        # GET 요청의 경우 빈 PostForm 인스턴스를 생성해 탬플릿에 전달
         form = PostForm()
 
+    # GET 요청에선 이 부분이 무조건 실행됨
+    # POST 요청에선 form.is_vaild()를 통과하지 못하면 이 부분이 실행됨
     return render(request, 'post/post_form.html', {'form': form})
 
+
+def post_detail(request, pk):
+    post = Post.objects.get(pk=pk)
+    context = {
+        'post': post
+    }
+    return render(request, 'post/post_detail.html', context)

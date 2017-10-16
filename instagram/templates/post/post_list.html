@@ -4,10 +4,9 @@
 <div class="container">
     {% for post in posts %}
         <div class="img">
+            <a href="{% url 'post_detail' pk=post.pk %}">
             <img src="{{ post.photo.url }}" alt="">
-        </div>
-        <div class="content">
-        <p>{{ post.content }}</p>
+            </a>
         </div>
         <div class="created">
             {{ post.created_at }}
