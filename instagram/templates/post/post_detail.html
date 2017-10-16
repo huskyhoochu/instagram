@@ -1,8 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<img src="{{ post.photo.url }}" alt="">
+    <img src="{{ post.photo.url }}" alt="">
     {% for comment in post.comments.all %}
-    <li>{{ comment.content }}</li>
+        <li>{{ comment.content }}</li>
     {% endfor %}
+    <div class="comment-input">
+        <form action="{% url 'comment_add' pk=post.pk %}" method="post">
+            {% csrf_token %}
+            {{ comment_form }}
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="댓글">
+                <span class="input-group-btn">
+                <button class="btn btn-sm btn-primary" type="submit">댓글 달기</button>
+                </span>
+            </div>
+        </form>
+    </div>
 {% endblock %}

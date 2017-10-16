@@ -45,8 +45,10 @@ def post_add(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    comment_form = PostCommentForm()
     context = {
-        'post': post
+        'post': post,
+        'comment_form': comment_form,
     }
     return render(request, 'post/post_detail.html', context)
 
@@ -60,13 +62,8 @@ def comment_add(request, pk):
                 post=post,
                 content=form.cleaned_data['text']
             )
-            return redirect('post_list')
 
-    else:
-        form = PostCommentForm()
-
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'post/post_list.html', context)
+    next = request.GET.get('next')
+    if next:
+        return redirect(next)
+    return redirect('post_detail', pk=pk)

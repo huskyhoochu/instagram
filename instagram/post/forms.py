@@ -12,6 +12,7 @@ class PostForm(forms.Form):
     #         raise forms.ValidationError('All text must uppercase!')
     #     return data
 
+
 class PostCommentForm(forms.Form):
     text = forms.CharField(
         widget=forms.Textarea
