@@ -10,12 +10,17 @@
     <title>Husky's instagram</title>
 </head>
 <body>
-<div>
-<a href="{% url 'post_add' %}">업로드</a>
+<div class="jumbotron">
+    <div class="container">
+        <a href="{% url 'post_list' %}"><h1>Instagram</h1></a>
+        <a role="button" href="{% url 'post_add' %}" class="btn btn-primary">업로드</a>
+        <a role="button" href="{% url 'signup' %}" class="btn btn-primary">회원가입</a>
+        <a role="button" href="{% url 'login' %}" class="btn btn-primary">로그인</a>
+    </div>
 </div>
 <div class="container">
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 </div>
 </body>
 </html>
