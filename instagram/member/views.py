@@ -1,28 +1,21 @@
 from django.contrib.auth import get_user_model, authenticate, login as django_login
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import SignupForm
+from .forms import SignupForm, LoginForm
 
 User = get_user_model()
 
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(
-            username=username,
-            password=password
-        )
-        if user is not None:
-            django_login(request, user)
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            form.login(request)
             return redirect('post_list')
         else:
             return HttpResponse('Login credentials invalid')
     else:
         return render(request, 'member/login.html')
-
-
 
 
 def signup(request):
