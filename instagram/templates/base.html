@@ -16,6 +16,13 @@
         <a role="button" href="{% url 'post_add' %}" class="btn btn-primary">업로드</a>
         <a role="button" href="{% url 'signup' %}" class="btn btn-primary">회원가입</a>
         <a role="button" href="{% url 'login' %}" class="btn btn-primary">로그인</a>
+        <p>
+            {% if user.is_authenticated %}
+                {{ user.username }}
+            {% else %}
+                로그인 해주세요
+            {% endif %}
+        </p>
     </div>
 </div>
 <div class="container">
