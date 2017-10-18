@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="form-control">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="id" placeholder="id">
+            <input type="password" name="password" placeholder="password">
+            <button class="btn btn-primary" type="submit">로그인</button>
+        </form>
+    </div>
+{% endblock %}
