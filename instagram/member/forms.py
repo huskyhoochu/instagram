@@ -37,9 +37,8 @@ class LoginForm(forms.Form):
         self.user = None
 
     def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get('username')
-        password = cleaned_data.get('password')
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
         # 인증에 성공하면 self.user 변수에 객체 할당
         self.user = authenticate(
             username=username,
@@ -73,6 +72,13 @@ class SignupForm(forms.Form):
             }
         )
     )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
 
     # clean_<field_name>
     def clean_username(self):
@@ -83,5 +89,22 @@ class SignupForm(forms.Form):
             raise forms.ValidationError(f'"{data}" is already exist')
         return data
 
+    def clean_password2(self):
+        password = self.cleaned_data['password']
+        password2 = self.cleaned_data['password2']
+        if password != password2:
+            raise forms.ValidationError('패스워드가 다릅니다')
+        return password2
 
+    def clean(self):
+        if self.is_valid():
+            setattr(self, 'signup', self._signup)
+        return self.cleaned_data
 
+    def _signup(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        return User.objects.create_user(
+            username=username,
+            password=password
+        )
