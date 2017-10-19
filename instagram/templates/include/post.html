@@ -23,15 +23,13 @@
             <div id="post-comments-{{ post.pk }}" style="margin: 5px 0 10px 0;">
                 {% for comment in post.comments.all %}
                     <div class="text-left">
-                        <span><strong>{{ comment.author }}</strong></span>
+                        <span style="display: inline-block; line-height: 2;"><strong>{{ comment.author }}</strong></span>
                         <span>{{ comment.content }}</span>
                         {% if request.user == comment.author %}
-                            <span class="text-right">
-                            <form action="{% url 'post:comment_delete' pk=comment.pk %}?next=/post/#post-{{ post.pk }}" method="post">
+                            <form style="display: inline-block; float: right;" action="{% url 'post:comment_delete' pk=comment.pk %}?next=/post/#post-{{ post.pk }}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-link">삭제</button>
+                                <button style="padding: 5px 0 0 0;" type="submit" class="btn btn-link">삭제</button>
                             </form>
-                            </span>
                         {% endif %}
                     </div>
                 {% endfor %}
