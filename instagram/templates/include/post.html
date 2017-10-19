@@ -1,16 +1,16 @@
 <div class="col-md-6 col-md-offset-3">
     <div class="thumbnail">
-    <div>
-        <strong>{{ post.author }}</strong>
-    </div>
-    {% if request.user == post.author %}
-        <div style="float: right; margin-bottom: 5px;">
-            <form action="{% url 'post:post_delete' pk=post.pk %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-            </form>
+        <div style="float: left; margin: 7px 0 10px 0;">
+            <strong>{{ post.author }}</strong>
         </div>
-    {% endif %}
+        {% if request.user == post.author %}
+            <div style="float: right; margin-bottom: 5px;">
+                <form action="{% url 'post:post_delete' pk=post.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                </form>
+            </div>
+        {% endif %}
         <div class="img" id="post-{{ post.pk }}">
             <a href="{% url 'post:post_detail' pk=post.pk %}">
                 <img class="img-responsive" src="{{ post.photo.url }}" alt="">
@@ -20,11 +20,23 @@
             <div class="created">
                 {{ post.created_at }}
             </div>
-            <div id="post-comments-{{ post.pk }}">
+            <div id="post-comments-{{ post.pk }}" style="margin: 5px 0 10px 0;">
                 {% for comment in post.comments.all %}
-                    <p class="text-left">댓글: {{ comment.content }}</p>
+                    <div class="text-left">
+                        <span><strong>{{ comment.author }}</strong></span>
+                        <span>{{ comment.content }}</span>
+                        {% if request.user == comment.author %}
+                            <span class="text-right">
+                            <form action="{% url 'post:comment_delete' pk=comment.pk %}?next=/post/#post-{{ post.pk }}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link">삭제</button>
+                            </form>
+                            </span>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
+
             <form class="form-inline" action="{% url 'post:comment_add' pk=post.pk %}?next=/post/#post-comments-{{ post.pk }}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
