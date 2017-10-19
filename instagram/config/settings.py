@@ -60,7 +60,7 @@ ALLOWED_HOSTS = []
 
 # Custom User Model
 
-AUTH_USER_MODEL = 'member.MyUser'
+AUTH_USER_MODEL = 'member.User'
 
 # Application definition
 

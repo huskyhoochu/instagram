@@ -15,7 +15,6 @@ class PostForm(forms.Form):
 
 class PostCommentForm(forms.Form):
     text = forms.CharField(
-        label='댓글',
         widget=forms.Textarea(attrs={
             'class': 'form-control'
         })

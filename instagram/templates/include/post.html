@@ -1,0 +1,33 @@
+<div class="col-md-6 col-md-offset-3">
+    <div class="thumbnail">
+        <div style="float: right; margin-bottom: 5px;">
+            <form action="{% url 'post:post_delete' pk=post.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+            </form>
+        </div>
+        <div class="img" id="post-{{ post.pk }}">
+            <a href="{% url 'post:post_detail' pk=post.pk %}">
+                <img class="img-responsive" src="{{ post.photo.url }}" alt="">
+            </a>
+        </div>
+        <div class="caption">
+            <div class="created">
+                {{ post.created_at }}
+            </div>
+            <div id="post-comments-{{ post.pk }}">
+                {% for comment in post.comments.all %}
+                    <p class="text-left">댓글: {{ comment.content }}</p>
+                {% endfor %}
+            </div>
+            <form class="form-inline" action="{% url 'post:comment_add' pk=post.pk %}?next=/post/#post-comments-{{ post.pk }}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea class="form-control" name="text" id="id_text" cols="55" rows="1"></textarea>
+                </div>
+                <button class="btn btn-sm btn-primary" type="submit">댓글 달기</button>
+            </form>
+        </div>
+    </div>
+</div>
+

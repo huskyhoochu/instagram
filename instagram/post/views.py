@@ -1,5 +1,7 @@
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 
+from config.settings import MEDIA_ROOT
 from post.models import Post, PostComment
 from .forms import PostForm, PostCommentForm
 
@@ -32,7 +34,7 @@ def post_add(request):
                 photo=form.cleaned_data['photo']
             )
             post.save()
-            return redirect('post_list')
+            return redirect('post:post_list')
 
     else:
         # GET 요청의 경우 빈 PostForm 인스턴스를 생성해 탬플릿에 전달
@@ -66,4 +68,15 @@ def comment_add(request, pk):
     next = request.GET.get('next')
     if next:
         return redirect(next)
-    return redirect('post_detail', pk=pk)
+    return redirect('post:post_detail', pk=pk)
+
+
+def post_delete(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        post.photo.delete()
+        post.delete()
+        return redirect('post:post_list')
+
+    else:
+        return redirect('post:post_list')
