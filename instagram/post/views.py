@@ -5,7 +5,7 @@ from .forms import PostForm, PostCommentForm
 
 def post_list(request):
     # 작가가 없으면 떠오르지 않도록 막기
-    posts = Post.objects.exclude(author=None)
+    posts = Post.objects.all()
     comment_form = PostCommentForm()
     context = {
         'posts': posts,
@@ -36,9 +36,7 @@ def post_add(request):
 
 def post_detail(request, pk):
     # get_object_or_404는 쿼리셋을 받을 수 있다
-    post = get_object_or_404(
-        Post.objects.exclude(author=None),
-        pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     comment_form = PostCommentForm()
     context = {
         'post': post,
