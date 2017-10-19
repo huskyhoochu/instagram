@@ -11,7 +11,7 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             form.login(request)
-            return redirect('post_list')
+            return redirect('post:post_list')
     else:
         form = LoginForm()
     context = {
@@ -22,7 +22,7 @@ def login(request):
 
 def logout(request):
     django_logout(request)
-    return redirect('post_list')
+    return redirect('post:post_list')
 
 
 def signup(request):

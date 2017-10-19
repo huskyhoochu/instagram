@@ -1,22 +1,11 @@
-import os
 from django.shortcuts import render, redirect, get_object_or_404
-
-from config.settings import MEDIA_ROOT
 from post.models import Post, PostComment
 from .forms import PostForm, PostCommentForm
 
 
 def post_list(request):
-    # if request.method == 'POST':
-    #     comment = PostComment.objects.create(
-    #
-    #         content=request.POST.get('comment')
-    #     )
-    #     comment.save()
-    #     return redirect('post_list')
-    #
-    # elif request.method == 'GET':
-    posts = Post.objects.order_by('-created_at')
+    # 작가가 없으면 떠오르지 않도록 막기
+    posts = Post.objects.exclude(author=None)
     comment_form = PostCommentForm()
     context = {
         'posts': posts,
@@ -46,7 +35,10 @@ def post_add(request):
 
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    # get_object_or_404는 쿼리셋을 받을 수 있다
+    post = get_object_or_404(
+        Post.objects.exclude(author=None),
+        pk=pk)
     comment_form = PostCommentForm()
     context = {
         'post': post,
