@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from post.models import Post, PostComment
 from .forms import PostForm, PostCommentForm
@@ -79,14 +80,17 @@ def comment_add(request, pk):
 
 
 def post_delete(request, pk):
-    post = Post.objects.get(pk=pk)
     if request.method == 'POST':
-        post.photo.delete()
-        post.delete()
-        return redirect('post:post_list')
+        # 해당하는 포스트가 있는지 검사
+        post = get_object_or_404(Post, pk=pk)
+        # request.user가 Post의 author인지 검사
+        if post.author == request.user:
+            post.photo.delete()
+            post.delete()
+            return redirect('post:post_list')
 
-    else:
-        return redirect('post:post_list')
+        else:
+            raise PermissionDenied
 
 
 def comment_delete(request, pk):
