@@ -3,7 +3,7 @@
 {% block content %}
 
     {% for post in posts %}
-        {% include 'include/post.html' %}
+        {% include 'include/post.html' with post_type='list' %}
     {% endfor %}
 
 {% endblock %}

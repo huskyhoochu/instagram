@@ -72,7 +72,7 @@ def comment_add(request, pk):
                 content=form.cleaned_data['text']
             )
     # 생성 후 Post의 detail 화면으로 이동
-    next = request.GET.get('next')
+    next = request.GET.get('next', '').strip()
     if next:
         return redirect(next)
     return redirect('post:post_detail', pk=pk)
