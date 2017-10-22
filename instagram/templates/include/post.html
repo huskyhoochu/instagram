@@ -1,16 +1,18 @@
 <div class="col-md-6 col-md-offset-3">
     <div class="thumbnail">
-        <div style="float: left; margin: 7px 0 10px 0;">
-            <strong>{{ post.author }}</strong>
-        </div>
-        {% if request.user == post.author %}
-            <div style="float: right; margin-bottom: 5px;">
-                <form action="{% url 'post:post_delete' pk=post.pk %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-                </form>
+        <div class="header" style="height: 40px;">
+            <div style="float: left; margin: 7px 0 10px 0;">
+                <strong>{{ post.author }}</strong>
             </div>
-        {% endif %}
+            {% if request.user == post.author %}
+                <div style="float: right; margin-bottom: 5px;">
+                    <form action="{% url 'post:post_delete' pk=post.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
         <div class="img" id="post-{{ post.pk }}">
             <a href="{% url 'post:post_detail' pk=post.pk %}">
                 <img class="img-responsive" src="{{ post.photo.url }}" alt="">
@@ -20,11 +22,17 @@
             <div class="created">
                 {{ post.created_at }}
             </div>
+
+            {#    댓글    #}
+
             <div id="post-comments-{{ post.pk }}" style="margin: 5px 0 10px 0;">
                 {% for comment in post.comments.all %}
                     <div class="text-left">
                         <span style="display: inline-block; line-height: 2;"><strong>{{ comment.author }}</strong></span>
                         <span>{{ comment.content }}</span>
+
+                        {# 댓글 삭제 #}
+
                         {% if request.user == comment.author %}
                             <form style="display: inline-block; float: right;" action="{% url 'post:comment_delete' pk=comment.pk %}?next=/post/#post-{{ post.pk }}" method="post">
                                 {% csrf_token %}
@@ -35,6 +43,8 @@
                 {% endfor %}
             </div>
 
+            {# 댓글 쓰기 #}
+
             <form class="form-inline"
                   action="{% url 'post:comment_add' pk=post.pk %}?next=
                   {% if post_type == 'list' %}
@@ -44,10 +54,11 @@
                   {% endif %}"
                   method="post">
                 {% csrf_token %}
-                <div class="form-group">
-                    <textarea class="form-control" name="text" id="id_text" cols="55" rows="1"></textarea>
+                <div class="form-group" style="position: relative; width: 100%;">
+                    <input style="width: 85%;" type="text" class="form-control" name="content" id="id-text">
+                    <button style="position: absolute; top: 0; right: 0;" class="btn btn-sm btn-primary" type="submit">댓글 달기</button>
                 </div>
-                <button class="btn btn-sm btn-primary" type="submit">댓글 달기</button>
+
             </form>
         </div>
     </div>

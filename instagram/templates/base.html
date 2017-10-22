@@ -12,7 +12,7 @@
 <body>
 <div class="jumbotron" style="background-color: #ebccd1">
     <div class="container">
-        <a href="{% url 'post:post_list' %}"><h1>Instagram</h1></a>
+        <a href="{% url 'post:post_list' %}"><h1>Idolstagram</h1></a>
         <a role="button" href="{% url 'member:signup' %}" class="btn btn-primary">회원가입</a>
         <p>
             {% if user.is_authenticated %}

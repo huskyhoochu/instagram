@@ -1,6 +1,10 @@
-from django.contrib.auth import get_user_model, logout as django_logout
-from django.http import HttpResponse
+from django.contrib.auth import (
+    get_user_model,
+    login as django_login,
+    logout as django_logout
+)
 from django.shortcuts import render, redirect
+
 from .forms import SignupForm, LoginForm
 
 User = get_user_model()
@@ -27,11 +31,14 @@ def logout(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        # 이미지 프로필을 업로드했을 경우
+        form = SignupForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.signup()
-            return HttpResponse(f'{user.username}, {user.password}')
+            user = form.save()
+            django_login(request, user)
+            return redirect('post:post_list')
 
+    # GET 요청 시
     else:
         form = SignupForm()
     context = {

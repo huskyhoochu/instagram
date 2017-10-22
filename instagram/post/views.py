@@ -32,10 +32,13 @@ def post_add(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             # 이 포스트에 정확한 데이터가 들어있다면 (유효성 검증)
-            post = Post.objects.create(
-                author=request.user,
-                photo=form.cleaned_data['photo']
-            )
+            # post = Post.objects.create(
+            #     author=request.user,
+            #     photo=form.cleaned_data['photo']
+            # )
+            # post.save()
+            post = form.save(commit=False)
+            post.author = request.user
             post.save()
             return redirect('post:post_list')
     else:
@@ -67,11 +70,16 @@ def comment_add(request, pk):
     if request.method == 'POST':
         form = PostCommentForm(request.POST)
         if form.is_valid():
-            PostComment.objects.create(
-                post=post,
-                author=request.user,
-                content=form.cleaned_data['text']
-            )
+            comment = form.save(commit=False)
+            comment.author = request.user
+            # 포스트와 댓글을 연결
+            comment.post = post
+            comment.save()
+            # PostComment.objects.create(
+            #     post=post,
+            #     author=request.user,
+            #     content=form.cleaned_data['text']
+            # )
     # 생성 후 Post의 detail 화면으로 이동
     next = request.GET.get('next', '').strip()
     if next:
