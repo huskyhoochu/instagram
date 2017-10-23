@@ -101,6 +101,34 @@ def post_delete(request, pk):
             raise PermissionDenied
 
 
+def post_like_toggle(request, pk):
+    """
+    post_pk에 해당하는 Post가
+    현재 로그인한 유저의 like_posts에 있다면 없애고
+    like_posts에 없다면 추가
+    :param request:
+    :param pk:
+    :return:
+    """
+
+    next_path = request.GET.get('next')
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+    # 사용자의 like_posts 목록에서 like_toggle할 Post가 있는지 확인
+    filtered_like_posts = user.like_posts.fitler(pk=post.pk)
+    # 존재할 경우, like_posts 목록에서 해당 Post 삭제
+    if filtered_like_posts.exists():
+        user.like_posts.remove(filtered_like_posts)
+    # 없을 경우, like_posts 목록에 해당 Post 추가
+    else:
+        user.like_posts.add(post)
+
+    # 이동할 path가 존재할 경우 해당 위치로, 없을 경우 Post 상세페이지로 이동
+    if next_path:
+        return redirect(next_path)
+    return redirect('post:post_detail', pk=pk)
+
+
 def comment_delete(request, pk):
     if not request.user.is_authenticated:
         return redirect('member:login')
@@ -114,7 +142,3 @@ def comment_delete(request, pk):
     if next:
         return redirect(next)
     return redirect('post:post_detail', pk=post_pk)
-
-
-
-
