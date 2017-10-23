@@ -3,8 +3,10 @@ from django.contrib.auth import (
     login as django_login,
     logout as django_logout
 )
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from member.decorators import login_required
 from .forms import SignupForm, LoginForm
 
 User = get_user_model()
@@ -21,6 +23,9 @@ def login(request):
     context = {
         'login_form': form
     }
+    next_path = request.GET.get('next')
+    if next_path:
+        return redirect(next_path)
     return render(request, 'member/login.html', context)
 
 
@@ -45,3 +50,8 @@ def signup(request):
         'signup_form': form
     }
     return render(request, 'member/signup.html', context)
+
+
+@login_required
+def profile(request):
+    return HttpResponse('hello')

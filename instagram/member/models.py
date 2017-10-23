@@ -1,6 +1,6 @@
 from django.contrib.auth.models import (
     AbstractUser,
-    UserManager as DjangoUserManager
+    UserManager as DjangoUserManager,
 )
 from django.db import models
 
@@ -22,6 +22,16 @@ class User(AbstractUser):
         'post.Post',
         verbose_name='좋아요 누른 포스트 목록'
     )
+    # 내가 팔로우하고 있는 유저 목록
+    #
+    # 내가 A를 follow한다 == 나는 A의 follower
+
+    following_users = models.ManyToManyField(
+        'self',
+        through='Relation',
+        symmetrical=False,
+        related_name='followers',
+        )
 
     objects = UserManager()
 
@@ -30,3 +40,25 @@ class User(AbstractUser):
         verbose_name_plural = f'{verbose_name} 목록'
 
     # REQUIRED_FIELDS = AbstractUser.REQUIRED_FIELDS + ['age']
+
+
+class Relation(models.Model):
+    # User follow 목록을 가질 수 있도록
+    # MTM에 대한 중개모델을 구성
+    # from_user, to_user, created_at으로 3개의 필드를 사용
+    from_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='following_user_relations'
+    )
+    to_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower_relations'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Relation ('\
+               f'from: {self.from_user.username}, '\
+               f'to: {self.to_user.username})'

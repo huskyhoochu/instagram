@@ -61,6 +61,7 @@ ALLOWED_HOSTS = []
 # Custom User Model
 
 AUTH_USER_MODEL = 'member.User'
+LOGIN_URL = 'member:login'
 
 # Application definition
 

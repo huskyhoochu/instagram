@@ -11,3 +11,4 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/comment/delete/', comment_delete, name='comment_delete'),
     url(r'^(?P<pk>\d+)/like-toggle/$', post_like_toggle, name='post_like_toggle'),
 ]
+

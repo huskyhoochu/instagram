@@ -1,6 +1,9 @@
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from post.models import Post, PostComment
+
+from member.decorators import login_required
+from .models import Post, PostComment
 from .forms import PostForm, PostCommentForm
 
 
@@ -15,6 +18,7 @@ def post_list(request):
     return render(request, 'post/post_list.html', context)
 
 
+@login_required
 def post_add(request):
     """
     1. 이 뷰에 접근할 때 해당 사용자가 인증된 상태가 아니면 로그인 뷰로 redirect
@@ -23,9 +27,9 @@ def post_add(request):
     :return:
     """
     # user가 유효한지 검증하는 과정
-    if not request.user.is_authenticated:
-        # 유저 검증을 통과하지 못하면 로그인 사이트로 리다이렉트
-        return redirect('member:login')
+    # if not request.user.is_authenticated:
+    #     # 유저 검증을 통과하지 못하면 로그인 사이트로 리다이렉트
+    #     return redirect('member:login')
 
     # post 요청 시 판정
     if request.method == "POST":
@@ -60,11 +64,12 @@ def post_detail(request, pk):
     return render(request, 'post/post_detail.html', context)
 
 
+@login_required
 def comment_add(request, pk):
-    # user가 유효한지 검증하는 과정
-    if not request.user.is_authenticated:
-        # 유저 검증을 통과하지 못하면 로그인 사이트로 리다이렉트
-        return redirect('member:login')
+    # # user가 유효한지 검증하는 과정
+    # if not request.user.is_authenticated:
+    #     # 유저 검증을 통과하지 못하면 로그인 사이트로 리다이렉트
+    #     return redirect('member:login')
 
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -87,6 +92,7 @@ def comment_add(request, pk):
     return redirect('post:post_detail', pk=pk)
 
 
+@login_required
 def post_delete(request, pk):
     if request.method == 'POST':
         # 해당하는 포스트가 있는지 검사
@@ -101,6 +107,7 @@ def post_delete(request, pk):
             raise PermissionDenied
 
 
+@login_required
 def post_like_toggle(request, pk):
     """
     post_pk에 해당하는 Post가
@@ -110,28 +117,32 @@ def post_like_toggle(request, pk):
     :param pk:
     :return:
     """
+    if request.method == 'POST':
+        post = get_object_or_404(Post, pk=pk)
+        user = request.user
+        # if not user.is_authenticated:
+        #     return redirect('member:login')
 
-    next_path = request.GET.get('next')
-    post = get_object_or_404(Post, pk=pk)
-    user = request.user
-    # 사용자의 like_posts 목록에서 like_toggle할 Post가 있는지 확인
-    filtered_like_posts = user.like_posts.fitler(pk=post.pk)
-    # 존재할 경우, like_posts 목록에서 해당 Post 삭제
-    if filtered_like_posts.exists():
-        user.like_posts.remove(filtered_like_posts)
-    # 없을 경우, like_posts 목록에 해당 Post 추가
-    else:
-        user.like_posts.add(post)
+        # 사용자의 like_posts 목록에서 like_toggle할 Post가 있는지 확인
+        filtered_like_posts = user.like_posts.filter(pk=post.pk)
+        # 존재할 경우, like_posts 목록에서 해당 Post 삭제
+        if filtered_like_posts.exists():
+            user.like_posts.remove(post)
+        # 없을 경우, like_posts 목록에 해당 Post 추가
+        else:
+            user.like_posts.add(post)
 
     # 이동할 path가 존재할 경우 해당 위치로, 없을 경우 Post 상세페이지로 이동
+    next_path = request.GET.get('next')
     if next_path:
         return redirect(next_path)
     return redirect('post:post_detail', pk=pk)
 
 
+@login_required
 def comment_delete(request, pk):
-    if not request.user.is_authenticated:
-        return redirect('member:login')
+    # if not request.user.is_authenticated:
+    #     return redirect('member:login')
 
     if request.method == 'POST':
         comment = PostComment.objects.get(pk=pk)
