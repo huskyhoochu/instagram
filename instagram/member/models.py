@@ -41,6 +41,22 @@ class User(AbstractUser):
 
     # REQUIRED_FIELDS = AbstractUser.REQUIRED_FIELDS + ['age']
 
+    def follow_toggle(self, user):
+        """
+        1. 주어진 user가 user 객체인지 확인
+
+        :param user:
+        :return:
+        """
+        if not isinstance(user, User):
+            raise ValueError('"user" argument must be User instance!')
+
+        relation, relation_created = self.following_user_relations.get_or_create(to_user=user)
+        if relation_created:
+            return True
+        relation.delete()
+        return False
+
 
 class Relation(models.Model):
     # User follow 목록을 가질 수 있도록
