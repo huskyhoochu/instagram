@@ -3,4 +3,11 @@
 {% block title %}로그인{% endblock %}
 {% block content %}
     {% include 'include/form-horizontal.html' with form=login_form submit_text='로그인' %}
+    <div class="col-md-6 col-md-offset-3">
+    <a href=
+            "https://www.facebook.com/v2.10/dialog/oauth?
+            client_id={{ facebook_app_id }}
+            &redirect_uri={{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'member:facebook_login' %}"
+       role="button" class="btn btn-info btn-block">페이스북 로그인</a>
+    </div>
 {% endblock %}
