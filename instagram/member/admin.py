@@ -9,15 +9,24 @@ from .models import User
 class UserAdmin(BaseUserAdmin):
     # 유저 보기에서 필드셋 추가
     fieldsets = BaseUserAdmin.fieldsets + (
-        ('추가 정보', {'fields': ('img_profile', 'age', 'like_posts')}),
+        ('추가 정보', {'fields': (
+            'img_profile',
+            'age',
+            'user_type',
+            'like_posts',
+        )}),
     )
     # 유저 가입에서 필드셋 추가
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         ('추가 정보', {
-            'fields': ('img_profile', 'age')
+            'fields': (
+                'img_profile',
+                'age',
+                'user_type',
+            )
         }),
     )
-    
+
     add_form = SignupForm
 
 
