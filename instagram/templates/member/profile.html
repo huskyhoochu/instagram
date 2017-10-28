@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}profile{% endblock %}
+
+{% block content %}
+    <div class="col-md-6 col-md-offset-3">
+        <div class="row">
+            <div class="col-md-3">
+                {% if user.img_profile %}
+                <img class="img-rounded" style="width: 100px;" src="{{ user.img_profile.url }}" alt="">
+                {% else%}
+                <img class="img-rounded" src="" alt="">
+                {% endif %}
+            </div>
+            <div class="col-md-9">
+                <h2 style="line-height: 0.6;"><strong>{{ user.nickname }}</strong></h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>팔로워</h2>
+            </div>
+        </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>닉네임</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for member in user.following_users.all %}
+            <tr>
+                <td>{{ member.img_profile.url }}</td>
+                <td>{{ member.nickname }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% endblock %}

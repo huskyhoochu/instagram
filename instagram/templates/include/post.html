@@ -3,7 +3,7 @@
     <div class="thumbnail">
         <div class="header" style="height: 40px;">
             <div style="float: left; margin: 7px 0 10px 0;">
-                <strong>{{ post.author }}</strong>
+                <a href="{% url 'member:profile' pk=post.author.pk %}"><strong>{{ post.author }}</strong></a>
             </div>
             {% if request.user == post.author %}
                 <div style="float: right; margin-bottom: 5px;">

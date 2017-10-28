@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from member.forms import SignupForm
-from .models import User
+from .forms import SignupForm
+from .models import User, Relation
 
 
 # 유저 어드민 커스텀
@@ -14,6 +14,7 @@ class UserAdmin(BaseUserAdmin):
             'age',
             'user_type',
             'like_posts',
+            'nickname',
         )}),
     )
     # 유저 가입에서 필드셋 추가

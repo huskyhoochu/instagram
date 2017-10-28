@@ -8,18 +8,21 @@ class UserModelTest(TransactionTestCase):
     DUMMY_USERNAME = 'username'
     DUMMY_PASSWORD = 'password'
     DUMMY_AGE = 0
+    DUMMY_NICKNAME = 'nickname'
 
     def test_fields_default_value(self):
         user = User.objects.create_user(
             username=self.DUMMY_USERNAME,
             password=self.DUMMY_PASSWORD,
             age=self.DUMMY_AGE,
+            nickname=self.DUMMY_NICKNAME,
         )
         self.assertEqual(user.first_name, '')
         self.assertEqual(user.last_name, '')
         self.assertEqual(user.username, self.DUMMY_USERNAME)
         self.assertEqual(user.img_profile, '')
         self.assertEqual(user.age, self.DUMMY_AGE)
+        self.assertEqual(user.nickname, self.DUMMY_NICKNAME)
         self.assertEqual(user.following_users.count(), 0)
 
         self.assertEqual(user, authenticate(

@@ -60,9 +60,14 @@ def signup(request):
     return render(request, 'member/signup.html', context)
 
 
-@login_required
-def profile(request):
-    return HttpResponse('hello')
+def profile(request, pk):
+    user = User.objects.get(pk=pk)
+
+    context = {
+        'user': user
+    }
+
+    return render(request, 'member/profile.html', context)
 
 
 def facebook_login(request):
@@ -163,3 +168,13 @@ def facebook_login(request):
         )
     django_login(request, user)
     return redirect('post:post_list')
+
+
+@login_required
+def follow(request, user_pk):
+    if request.method == 'POST':
+        user = User.objects.get(pk=user_pk)
+        User.follow_toggle(user)
+
+    return
+

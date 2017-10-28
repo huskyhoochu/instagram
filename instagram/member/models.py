@@ -12,6 +12,7 @@ class UserManager(DjangoUserManager):
 
 
 class User(AbstractUser):
+    # 소셜 유저 타입 정의
     USER_TYPE_FACEBOOK = 'f'
     USER_TYPE_DJANGO = 'd'
     CHOICES_USER_TYPE = (
@@ -19,7 +20,8 @@ class User(AbstractUser):
         (USER_TYPE_DJANGO, 'django'),
     )
     user_type = models.CharField(max_length=1, choices=CHOICES_USER_TYPE)
-
+    # 여러 가지 요소들
+    nickname = models.CharField(max_length=50, blank=True, null=True)
     img_profile = models.ImageField(
         '프로필 이미지',
         upload_to='user',
@@ -28,7 +30,8 @@ class User(AbstractUser):
     # 좋아요
     like_posts = models.ManyToManyField(
         'post.Post',
-        verbose_name='좋아요 누른 포스트 목록'
+        verbose_name='좋아요 누른 포스트 목록',
+        blank=True
     )
     # 내가 팔로우하고 있는 유저 목록
     #
@@ -39,7 +42,7 @@ class User(AbstractUser):
         through='Relation',
         symmetrical=False,
         related_name='followers',
-        )
+    )
 
     objects = UserManager()
 
@@ -83,6 +86,6 @@ class Relation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Relation ('\
-               f'from: {self.from_user.username}, '\
+        return f'Relation (' \
+               f'from: {self.from_user.username}, ' \
                f'to: {self.to_user.username})'
