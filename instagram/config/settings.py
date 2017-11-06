@@ -26,6 +26,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 # instagram_project/instagram/static/
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
@@ -65,7 +66,11 @@ FACEBOOK_SCOPE = [
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '.amazonaws.com',
+    '.huskyhoochu.com',
+]
 
 # Custom User Model
 
@@ -83,6 +88,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third-party app
     'django_extensions',
+    'storages',
     # User app
     'post',
     'member',
@@ -162,3 +168,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# AWS
+
+AWS_ACCESS_KEY_ID = config_secret_common['aws']['access_key_id']
+AWS_SECRET_ACCESS_KEY = config_secret_common['aws']['secret_access_key']
+AWS_STORAGE_BUCKET_NAME = config_secret_common['aws']['s3_bucket_name']
+AWS_S3_REGION_NAME = config_secret_common['aws']['s3_region_name']
+AWS_S3_SIGNATURE_VERSION = config_secret_common['aws']['s3_signature_version']
+
+# S3 FileStorage
+DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
+STATICFILES_STORAGE = 'config.storages.StaticStorage'
+
+# AWS Storage
+STATICFILES_LOCATION = 'static'
+MEDIAFILES_LOCATION = 'media'
