@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
+from rest_framework.test import APITestCase
 
 from ... import views
 
@@ -23,3 +24,5 @@ class PostLikeToggleViewTest(TestCase):
     def test_url_resolves_to_post_like_toggle_view(self):
         found = resolve(self.VIEW_URL)
         self.assertEqual(found.func, views.post_like_toggle)
+
+

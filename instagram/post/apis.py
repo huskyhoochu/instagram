@@ -8,18 +8,16 @@ from post.serializers import PostSerializer
 from .models import Post
 
 
-class PostList(mixins.ListModelMixin,
-               mixins.CreateModelMixin,
-               generics.GenericAPIView):
+class PostList(generics.ListCreateAPIView):
     # generics.GenericAPIView와 mixins를 상속받아 처리
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    #
+    # def get(self, request, *args, **kwargs):
+    #     return self.list(request, *args, **kwargs)
+    #
+    # def post(self, request, *args, **kwargs):
+    #     return self.create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
