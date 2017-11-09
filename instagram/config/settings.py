@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     # Third-party app
     'django_extensions',
     'storages',
+    'rest_framework',
     # User app
     'post',
     'member',
