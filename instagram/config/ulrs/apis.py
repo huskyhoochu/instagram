@@ -1,7 +1,8 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
-from post.apis import PostList
 
 urlpatterns = [
-    url(r'^api/posts/$', PostList.as_view(), name='api-posts'),
+    url(r'^members/$', include('member.urls.apis', namespace='members')),
+    url(r'^posts/$', include('post.urls.apis', namespace='posts')),
+
 ]
