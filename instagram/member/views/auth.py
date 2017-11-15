@@ -10,6 +10,12 @@ from ..forms import SignupForm, LoginForm
 
 User = get_user_model()
 
+__all__ = (
+    'login',
+    'logout',
+    'signup',
+)
+
 
 def login(request):
     if request.method == 'POST':

@@ -93,12 +93,18 @@ class FacebookLogin(APIView):
             raise APIException('페이스북 토큰이 유효하지 않음')
 
         # FacebookBackend를 사용해서 유저 인증
-        user = authenticate(facebook_user_id=request.data['facebook_user_id'])
+        user = authenticate(facebook_user_id=request.data.get('facebook_user_id'))
         # 인증에 실패한 경우 페이스북유저 타입으로 유저를 만들어줌
         if not user:
             user = User.objects.create_user(
                 username=f'fb_{request.data["facebook_user_id"]}',
                 user_type=User.USER_TYPE_FACEBOOK,
+                age=0,
             )
         # 유저 시리얼라이즈 결과를 Response
-        return Response(UserSerializer(user).data)
+        # token도 추가
+        data = {
+            'user': UserSerializer(user).data,
+            'token': user.token,
+        }
+        return Response(data)

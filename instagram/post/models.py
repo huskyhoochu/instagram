@@ -47,3 +47,10 @@ class PostComment(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class SMS(models.Model):
+    type = models.CharField(max_length=10)
+    to = models.CharField(max_length=20)
+    froms = models.CharField(max_length=20)
+    text = models.CharField(max_length=89)

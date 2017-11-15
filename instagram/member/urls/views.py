@@ -1,12 +1,14 @@
 from django.conf.urls import url
 
-from member.views import auth, auth_facebook, profile, relations
+from .. import views
 
 urlpatterns = [
-    url(r'^signup/$', auth.signup, name='signup'),
-    url(r'^login/$', auth.login, name='login'),
-    url(r'^logout/$', auth.logout, name='logout'),
-    url('^(?P<pk>\d+)/profile/$', profile, name='profile'),
-    url('^facebook-login/$', auth_facebook.facebook_login, name='facebook_login'),
+    url(r'^signup/$', views.signup, name='signup'),
+    url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
+    url('^(?P<pk>\d+)/profile/$', views.profile, name='profile'),
+    url('^facebook-login/$', views.facebook_login, name='facebook_login'),
+    url(r'^front-facebook-login/$',
+        views.FrontFacebookLogin.as_view(),
+        name='front-facebook-login'),
 ]
-
