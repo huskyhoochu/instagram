@@ -4,7 +4,6 @@
 
 # custom
 .idea/
-.elasticbeanstalk/
 
 # Created by https://www.gitignore.io/api/linux,macos,python,django,pycharm
 
