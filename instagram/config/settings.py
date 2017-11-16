@@ -71,6 +71,7 @@ ALLOWED_HOSTS = [
     '.amazonaws.com',
     '.elasticbeanstalk.com',
     '.huskyhoochu.com',
+    'api.huskyhoochu.com',
 ]
 
 # Custom User Model
