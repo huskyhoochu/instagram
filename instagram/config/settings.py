@@ -75,6 +75,8 @@ ALLOWED_HOSTS = [
 ]
 
 # elasticbeanstalk healthcheck 대비 코드
+
+
 def is_ec2_linux():
     """Detect if we are running on an EC2 Linux Instance
        See http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/identify_ec2_instances.html
