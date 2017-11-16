@@ -74,6 +74,13 @@ ALLOWED_HOSTS = [
     'api.huskyhoochu.com',
 ]
 
+# 프론트에서 요청이 들어올 때 장고가 허용해주는 도메인들
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3001',
+    'front.localhost:8013',
+    'huskyhoochu.com',
+)
+
 # Custom User Model
 
 AUTH_USER_MODEL = 'member.User'

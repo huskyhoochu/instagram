@@ -1,4 +1,6 @@
 !.config_secret/
+# 프론트엔드 파일들
+!/front/
 
 # custom
 .idea/

@@ -2,7 +2,8 @@
 .config_secret/
 .idea/
 .elasticbeanstalk/
-
+# 프론트엔드 파일들
+/front/
 # Created by https://www.gitignore.io/api/linux,macos,python,django,pycharm
 
 ### Django ###
