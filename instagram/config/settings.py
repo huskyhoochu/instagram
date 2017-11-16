@@ -69,6 +69,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '.amazonaws.com',
+    '.elasticbeanstalk.com',
     '.huskyhoochu.com',
 ]
 
