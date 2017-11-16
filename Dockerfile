@@ -26,7 +26,17 @@ RUN         ln -sf /etc/nginx/sites-available/mysite.conf \
 # -p: 마지막 디렉터리를 만들 때 상위 디렉터리가 없다면 순서대로 생성해준다
 RUN         mkdir -p /var/log/uwsgi/app
 
+# mysqlite 사용할 경우
+# WORKDIR   /srv/app/instagram
+# 정적파일 수집
+# RUN       /root/.pyenv/versions/app/python manage.py collectstatic --noinput
+# sqlite3로 migrate
+# RUN       /root/.pyenv/versions/app/python manage.py migrate --noinput
+
 # supervisor
 RUN         cp /srv/app/.config/supervisor/* \
                 /etc/supervisor/conf.d/
 CMD         supervisord -n
+
+# port open
+EXPOSE      80
