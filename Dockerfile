@@ -19,13 +19,14 @@ RUN         pyenv local app
 # nginx가 supervisor의 지배를 받도록 nginx.conf 수정한 것 붙여넣기
 RUN         cp /srv/app/.config/nginx/nginx.conf \
                 /etc/nginx/nginx.conf
+
+# 기본 conf 삭제
+RUN         rm -rf /etc/nginx/sites-enabled/*
+
 # conf 파일 옮겨넣고 심볼릭 링크 작성
 RUN         cp /srv/app/.config/nginx/mysite.conf /etc/nginx/sites-available/
 RUN         ln -sf /etc/nginx/sites-available/mysite.conf \
                     /etc/nginx/sites-enabled/mysite.conf
-# 기본 conf 삭제
-RUN         rm -rf /etc/nginx/sites-enabled/*
-
 # uWSGI
 # 로그 폴더 만들기
 # -p: 마지막 디렉터리를 만들 때 상위 디렉터리가 없다면 순서대로 생성해준다
@@ -41,7 +42,7 @@ RUN         mkdir -p /var/log/uwsgi/app
 # supervisor
 RUN         cp /srv/app/.config/supervisor/* \
                 /etc/supervisor/conf.d/
-CMD         supervisord -n
+#CMD         supervisord -n
 
 # port open
 EXPOSE      80
