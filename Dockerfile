@@ -16,10 +16,15 @@ WORKDIR     /srv/app
 RUN         pyenv local app
 
 # Nginx
+# nginx가 supervisor의 지배를 받도록 nginx.conf 수정한 것 붙여넣기
+RUN         cp /srv/app/.config/nginx/nginx.conf \
+                /etc/nginx/nginx.conf
+# conf 파일 옮겨넣고 심볼릭 링크 작성
 RUN         cp /srv/app/.config/nginx/mysite.conf /etc/nginx/sites-available/
-RUN         rm -rf /etc/nginx/sites-enabled/*
 RUN         ln -sf /etc/nginx/sites-available/mysite.conf \
                     /etc/nginx/sites-enabled/mysite.conf
+# 기본 conf 삭제
+RUN         rm -rf /etc/nginx/sites-enabled/*
 
 # uWSGI
 # 로그 폴더 만들기
