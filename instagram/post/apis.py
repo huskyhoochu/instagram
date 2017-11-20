@@ -14,6 +14,9 @@ class PostList(generics.ListCreateAPIView):
     # generics.GenericAPIView와 mixins를 상속받아 처리
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    # permission_classes = (
+    #     permissions.IsAuthenticated,
+    # )
     #
     # def get(self, request, *args, **kwargs):
     #     return self.list(request, *args, **kwargs)

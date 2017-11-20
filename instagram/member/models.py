@@ -6,6 +6,9 @@ from django.db import models
 
 
 # 프록시 모델에서 사용했던 프록시 모델 매니저
+from rest_framework.authtoken.models import Token
+
+
 class UserManager(DjangoUserManager):
     def create_superuser(self, *args, **kwargs):
         return super().create_superuser(age=30, *args, **kwargs)
@@ -51,6 +54,10 @@ class User(AbstractUser):
         verbose_name_plural = f'{verbose_name} 목록'
 
     # REQUIRED_FIELDS = AbstractUser.REQUIRED_FIELDS + ['age']
+
+    @property
+    def token(self):
+        return Token.objects.get_or_create(user=self)[0].key
 
     def follow_toggle(self, user):
         """
