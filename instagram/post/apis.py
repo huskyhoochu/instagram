@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from member.serializers import UserSerializer
+from post.pagination import StandardPostViewPagination
 from post.serializers import PostSerializer
 from .models import Post
 from utils.permissions import IsAuthorOrReadOnly
@@ -14,6 +15,7 @@ class PostList(generics.ListCreateAPIView):
     # generics.GenericAPIView와 mixins를 상속받아 처리
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = StandardPostViewPagination
     # permission_classes = (
     #     permissions.IsAuthenticated,
     # )
